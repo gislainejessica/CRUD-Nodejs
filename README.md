@@ -1,0 +1,4 @@
+express
+sequelize
+pg
+yup
