@@ -11,11 +11,14 @@ exemplo de tipo de endereço: residencial, comercial, cobrança, entrega
 ---
 
 - **Validações**
-- *NOME*, *GÊNERO* obrigatórios,
-- *data de nascimento* data válida, 
-- *CEP*, *EMAIL*, *CPF* informações válidas,
-- não permitir endereços ou contatos duplicados, 
-- não permitir cadastrar a mesma pessoa mais de uma vez.
+- [x] *NOME*, *GÊNERO* obrigatórios,
+- [x] *data de nascimento* data válida, 
+- [ ] *CEP*, *EMAIL*, *CPF* informações válidas,
+- [ ] não permitir endereços ou contatos duplicados, 
+- [ ] não permitir cadastrar a mesma pessoa mais de uma vez.
+
+*_OBS_: __CPF__ como obrigatório, pois vai servir para indentificar a pessoa,
+ou seja, para saber se a pessoa já foi cadastrada olhar cpf.
 
 ---
 ### Funcionalidades
@@ -42,6 +45,9 @@ Ao entrar em contato sobre a vaga, por Email ou Telegram, informe o link para o 
 - pg (PostGres)
 - yup (Validação)
 - sequelize (ORM bancos relacionais)
+- datefns (Manipulação de datas)
+- cep-promise (buscar endereço atraves do cep) 
+- gerador-validador-cpf (validar cpf)
 
 ---
 
@@ -50,7 +56,6 @@ Ao entrar em contato sobre a vaga, por Email ou Telegram, informe o link para o 
 
 ### Camandos usados no desenvolvimento
 - `sudo docker run --name crud -e POSTGRES_PASSWORD=crud -p 5532:5432 -d postgres:11.5-alpine`
-
 - `sequelize-cli sequelize -D`
 
 ---

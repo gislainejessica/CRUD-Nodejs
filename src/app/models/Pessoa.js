@@ -7,12 +7,14 @@ class Pessoa extends Model {
 			{ 
         name: {
           type: Sequelize.STRING,
+          allowNull: false,
         },
         genero: {
           type: Sequelize.STRING,
+          allowNull: false,
         },
-        dataNascimento: {
-          type: Sequelize.DATE,
+        data_nascimento	: {
+          type: Sequelize.STRING,
         },
         cep: {
           type: Sequelize.NUMBER,
@@ -22,6 +24,7 @@ class Pessoa extends Model {
         },
         cpf: {
             type: Sequelize.STRING,
+            allowNull: false,
         },
 			},
 			{

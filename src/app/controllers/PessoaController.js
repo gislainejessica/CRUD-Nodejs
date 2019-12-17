@@ -1,44 +1,79 @@
-import * as Yup from 'yup'
-import Pessoa from '../models/Pessoa'
+import * as Yup from 'yup';
+import Pessoa from '../models/Pessoa';
+import { isBefore, startOfHour, parseISO } from 'date-fns';
+
+//import buscaCep from 'busca-cep';
+import cep from 'cep-promise'
+
+
+import { validate as validateCPF } from 'gerador-validador-cpf'
+
 
 // Criar uma classe validators para validar DATA, CEP, CPF, EMAIL
   class PessoaController {
     // Cadastra uma pessoa 
     async store(req, res) {
+
       // Validação das entradas
       const schema = await Yup.object().shape({
-        nome: Yup.string().required(),
+        name: Yup.string().required(),
         genero: Yup.string().required(),
-        dataNascimento: Yup.date(),
-        email: Yup.string()
-          .email(),
+        data: Yup.string(),
+        email: Yup.string().email(),
         cep: Yup.string(),
-        cpf: Yup.string().min(11).required(),
+        cpf: Yup.string().required(),
        })
-  
-      if (!schema.isValid(req.body)) {
+
+      if (!(await schema.isValid(req.body))) {
         return res.status(400).json({ message: 'Falha na validação de dados' })
       }
-      /** Validar data de nascimento */
-      /** Validar cep (criar uma tabela de endereçao associado a essa pessoa)*/
-      /** Validar cpf */
 
-      // Verificar se usuario existe (cep, cpf)
-      const pessoaExists = await Pessoa.findOne({ where: { email: req.body.email } })
-      if (pessoaExists) {
-        return res.status(400).json({ error: 'email já está cadastrado' })
+      /** Validar cep (criar uma tabela de endereço associado a essa pessoa)*/
+      if (req.body.cep){
+        //const endereco =  await buscaCep(req.body.cep);
+        try {
+          const resposta = await cep(req.body.cep)
+          console.log(resposta)  
+        }catch(erros){
+          return res.status(400).json({ message: 'Cep Inválido' })
+        }
       }
-    
+
+      /** Validar cpf */
+      if (req.body.cpf){
+        const valido = validateCPF(req.body.cpf)
+        if (!valido){
+          return res.status(400).json({ error: 'CPF inválido' })
+        }  
+      }
+      // Verificar se usuario existe (cpf)
+      const pessoaExists = await Pessoa.findOne({ where: { cpf: req.body.cpf } })
+      if (pessoaExists) {
+        return res.status(400).json({ error: 'Pessoa já tem um cpf cadastrado' })
+      }
+
+      // Data no formato ISO 
+      /** Validar data de nascimento */
+      if (req.body.data){
+        const hora = startOfHour(parseISO(req.body.data))
+        const dataValida = isBefore(hora, new Date())
+  
+        if (!dataValida){
+          return res.status(400).json({ error: 'Informe uma data válida' })
+        }  
+      }
+
       const novo = {
         name: req.body.name,
         email: req.body.email,
         genero: req.body.genero,
         cep: req.body.cep,
         cpf:req.body.cpf,
-        dataNascimento: req.body.dataNascimento,
+        data_nascimento: req.body.data,
       }
   
       await Pessoa.create(novo)
+
       return res.json(novo)
     }
     
@@ -54,11 +89,10 @@ import Pessoa from '../models/Pessoa'
   
       // Validação das entradas
       const schema = await Yup.object().shape({
-        name: Yup.string(),
+        nome: Yup.string(),
         email: Yup.string()
           .email()
           .required(),
-        admim: Yup.boolean(),
       })
   
       if (!(await schema.isValid(req.body))) {

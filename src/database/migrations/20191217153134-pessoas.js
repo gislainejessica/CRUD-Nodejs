@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.DATE,
       },
       cep: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       email: {
         type: Sequelize.STRING,
@@ -39,7 +39,7 @@ module.exports = {
 			},
     });
   },
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => {
       return queryInterface.dropTable('pessoas');
   }
 }
