@@ -1,7 +1,6 @@
-const express = require('express')
-require('./database')
-
-const routes =  require('./routes') 
+import express from 'express'
+import './database'
+import routes  from './routes'
 
 const app = express()
 

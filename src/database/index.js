@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize')
-const DataConfig = require('../config/database')
-const Pessoa = require('../models/Pessoa')
+import Sequelize from 'sequelize'
+import DataConfig from'../config/database'
+import Pessoa from '../app/models/Pessoa'
 
 const models = [Pessoa]
 

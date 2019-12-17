@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      dataNascimento: {
+      data_nascimento: {
         type: Sequelize.DATE,
       },
       cep: {
@@ -29,6 +29,14 @@ module.exports = {
       cpf: {
         type: Sequelize.STRING,
       },
+      created_at: {
+				type: Sequelize.DATE,
+				allowNull: false,
+			},
+			updated_at: {
+				type: Sequelize.DATE,
+				allowNull: false,
+			},
     });
   },
   down: (queryInterface, Sequelize) => {
