@@ -24,13 +24,13 @@ import { validate as validateCPF } from 'gerador-validador-cpf'
         cpf: Yup.string().required(),
        })
 
+      // Identificar o que está errado ....
       if (!(await schema.isValid(req.body))) {
-        return res.status(400).json({ message: 'Falha na validação de dados' })
+        return res.status(400).json({ message: `Falha na validação de dados` })
       }
 
       /** Validar cep (criar uma tabela de endereço associado a essa pessoa)*/
       if (req.body.cep){
-        //const endereco =  await buscaCep(req.body.cep);
         try {
           const resposta = await cep(req.body.cep)
           console.log(resposta)  
@@ -63,7 +63,7 @@ import { validate as validateCPF } from 'gerador-validador-cpf'
         }  
       }
 
-      const novo = {
+      const pessoa = {
         name: req.body.name,
         email: req.body.email,
         genero: req.body.genero,
@@ -72,9 +72,9 @@ import { validate as validateCPF } from 'gerador-validador-cpf'
         data_nascimento: req.body.data,
       }
   
-      await Pessoa.create(novo)
+      await Pessoa.create(pessoa)
 
-      return res.json(novo)
+      return res.json(pessoa)
     }
     
     // Lista todas as pessoas cadastradas
